@@ -1,0 +1,41 @@
+.userList{
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.blue {
+    background-color: lightblue;
+}
+
+.red {
+    background-color: lightcoral
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+#fixtures li{
+    list-style-type: none;
+    display: inline-block;
+    padding: 5px;
+}
+
+li:nth-child(1){
+    text-decoration: underline;
+    width: 100%;
+}
+
+li:nth-child(3){
+    color: red;
+}
+
+li:nth-child(5){
+    float: right;
+}
+
+.buttons {
+    cursor: pointer;
+}
+
+

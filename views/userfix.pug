@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    nav.navbar.navbar-inverse.bg-inverse
+        a.navbar-brand= title
+        p.navbar-text Welcome to #{title}
+
+    div#fixtures.container-fluid.col-sm-12
+        each fix in fixtures
+            div.userList.blue.col-sm-offset-2.col-sm-8
+                ul
+                    li= new Date(fix.fixDate).toDateString()
+                    li= fix.team          
+                    li= 'vs ' + fix.against
+                    li= '@ ' + fix.location
+                    li(style="visibility: hidden;")= fix._id
+
+    script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+    script(src='/javascripts/app.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')

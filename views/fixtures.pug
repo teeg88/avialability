@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  nav.navbar.navbar-inverse.bg-inverse
+    a.navbar-brand= title
+    p.navbar-text Welcome to #{title}
+
+  div#addFix.container-fluid
+    p#response
+    form(action="" method="post")
+      div.form-group
+        label(for="fixDate") Date:
+        input#fixDate.form-control(required name="fixDate" type="date")
+      div.form-group
+        label(for="team") Team: 
+        select#team.form-control(required name="team" type="text")
+          option 1st XI
+          option 2nd XI
+      div.form-group
+        label(for="against") Opponent: 
+        input#against.form-control(required name="against" type="text")
+      div.form-group
+        label(for="location") Location:
+        select#location.form-control(required name="location")
+          option Home
+          option Away
+      div.form-group
+        input.btn.btn-primary(type="submit")
+
+  div#fixtures.container-fluid.col-sm-12
+      each fix in fixtures
+        ul#list.col-sm-offset-2.col-sm-8
+          li= new Date(fix.fixDate).toDateString()
+          li= fix.team          
+          li= 'vs ' + fix.against
+          li= '@ ' + fix.location 
+          li
+            button#deleteButton.btn-danger delete
+          li(style="visibility: hidden;")= fix._id
+      
+ 
+  script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+  script(src='/javascripts/app.js')
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
