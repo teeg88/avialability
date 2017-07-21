@@ -1,0 +1,11 @@
+extends layout
+
+block content
+
+    p= flashMessage
+    
+    div.container.col-xs-12
+        h4 Active Users:
+        ul
+            each user in users
+                li= user.email + " | " + user.password

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  p.text-danger.bg-danger= flashMessage
+
+  div#sign_in.container-fluid
+    h3 Sign In
+    form(action="/signin" method="post")
+      div.form-group
+        label(for="email") Email:
+          input.form-control(type="email" name="email")
+      div.form-group  
+        label(for="password") Password:
+          input.form-control(type="password" name="password")
+      div.form-group
+        input.btn.btn-primary(type="submit")
+    a#showSignUp(href="/signup") Not registered? Sign Up...
+
