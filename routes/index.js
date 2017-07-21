@@ -1,9 +1,55 @@
-var express = require('express');
-var router = express.Router();
+const express       = require('express');
+const router        = express.Router();
+const bodyParser    = require('body-parser');
+const User          = require('../models/users.js');
+const passport      = require('passport');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', isLoggedIn, (req, res, next)=>{
+  res.render('index', {
+    title : "User Home",
+    user : req.user // get the user out of session and pass to template
+  });
 });
+
+router.get('/signup', (req, res, next) => {
+  if (req.user){
+    res.redirect('/')
+  } else { 
+    res.render('signup', { title: 'Sign Up', flashMessage : req.flash('signupMessage') })
+  }   
+});
+
+router.post('/signup',
+  passport.authenticate('local-signup', {
+      successRedirect : '/fixtures', // redirect to the secure profile section
+      failureRedirect : '/signup', // redirect back to the signup page if there is an error
+      failureFlash : true // allow flash messages
+}));
+
+router.get('/signin', (req, res, next)=>{
+  res.render('signin', { title : 'Log In', flashMessage : req.flash('loginMessage') })
+});
+
+router.post('/signin',
+  passport.authenticate('local-login', {
+      successRedirect : '/', // redirect to the secure profile section
+      failureRedirect : '/signin', // redirect back to the signup page if there is an error
+      failureFlash : true // allow flash messages
+}));
+
+router.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/signin');
+});
+
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()){
+    return next();
+  } else {
+    req.flash("loginMessage", "You need to be signed in to access that page")
+    res.redirect('/signin');
+  };
+};
 
 module.exports = router;

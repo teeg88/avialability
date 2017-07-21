@@ -1,10 +1,6 @@
 extends layout
 
 block content
-  nav.navbar.navbar-inverse.bg-inverse
-    a.navbar-brand= title
-    p.navbar-text Welcome to #{title}
-
   div#addFix.container-fluid
     p#response
     form(action="" method="post")
@@ -29,7 +25,7 @@ block content
 
   div#fixtures.container-fluid.col-sm-12
       each fix in fixtures
-        ul#list.col-sm-offset-2.col-sm-8
+        ul.userList.blue.col-sm-offset-2.col-sm-8
           li= new Date(fix.fixDate).toDateString()
           li= fix.team          
           li= 'vs ' + fix.against
@@ -37,8 +33,7 @@ block content
           li
             button#deleteButton.btn-danger delete
           li(style="visibility: hidden;")= fix._id
+
+block append scripts
+  script(src='/javascripts/fixtures.js')
       
- 
-  script(src="https://code.jquery.com/jquery-3.2.1.min.js")
-  script(src='/javascripts/app.js')
-  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')

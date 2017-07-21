@@ -6,4 +6,13 @@ html
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    nav.navbar.navbar-inverse.bg-inverse
+      a.navbar-brand= title
+      if user
+        p.navbar-text Logged in as: #{user.local.email}
+          a(href='/logout') Logout
+    div.container-fluid
+      block content
+    block scripts
+      script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')

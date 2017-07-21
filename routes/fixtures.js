@@ -3,8 +3,8 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var Fixture = require('../models/fixtures.js');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
+
+router.get('/', isLoggedIn, function(req, res, next) {
   
   Fixture.find({}, (err, fixtures) => {
         if (err)
@@ -14,11 +14,11 @@ router.get('/', function(req, res, next) {
           return a.fixDate - b.fixDate;
         })
 
-        res.render('fixtures', {title : 'Fixtures', fixtures});
-    });  
+        res.render('fixtures', {title : 'Fixtures', fixtures, user: req.user});
+  });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', isLoggedIn, (req, res, next) => {
   
   const fixture = new Fixture({
     fixDate: req.body.fixDate,
@@ -37,7 +37,7 @@ router.post('/', (req, res, next) => {
 
 });
 
-router.delete('/', (req, res) => {
+router.delete('/', isLoggedIn, (req, res) => {
     const fixId = req.body.id;
     console.log(fixId);
 
@@ -48,7 +48,7 @@ router.delete('/', (req, res) => {
     res.send('Fixture: ' + fixId + ' removed...');
 });
 
-router.get('/:user', function(req, res, next) {
+router.get('/:user', isLoggedIn, function(req, res, next) {
   const userId = req.params.user;
   Fixture.find({}, (err, fixtures) => {
       if (err)
@@ -58,9 +58,24 @@ router.get('/:user', function(req, res, next) {
         return a.fixDate - b.fixDate;
       })
 
-    res.render('userfix', {title: 'User Fixtures', userId, fixtures})
-  });  
-  
+    res.render('userfix', {title: 'User Fixtures', userId, fixtures, user : req.user})
+  });
 });
+
+router.put('/:user', isLoggedIn, function(req, res, next){
+  // find fixture by fix ID
+  // add user id avialble to fixture document
+  // send response message "availability updated"? required? 
+  res.redirect('/')
+});
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()){
+    return next();
+  } else {
+    req.flash("loginMessage", "You need to be signed in to access that page")
+    res.redirect('/signin');
+  }
+}
 
 module.exports = router;
