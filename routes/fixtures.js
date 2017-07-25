@@ -1,10 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-var Fixture = require('../models/fixtures.js');
+const express 		= require('express');
+const router 		= express.Router();
+const bodyParser 	= require('body-parser');
+const Fixture 		= require('../models/fixtures.js');
+const User 			= require('../models/users.js');
 
 
-router.get('/', isLoggedIn, function(req, res, next) {
+router.get('/', isLoggedIn, (req, res, next)=>{
   
   Fixture.find({}, (err, fixtures) => {
         if (err)
@@ -20,62 +21,121 @@ router.get('/', isLoggedIn, function(req, res, next) {
 
 router.post('/', isLoggedIn, (req, res, next) => {
   
-  const fixture = new Fixture({
-    fixDate: req.body.fixDate,
-    against: req.body.against,
-    team: req.body.team,
-    location: req.body.location
-  });
+	const fixture = new Fixture({
+		fixDate: req.body.fixDate,
+		against: req.body.against,
+		team: req.body.team,
+		location: req.body.location
+	});
 
-  fixture.save((err) => {
-    if (err) {
-       res.render('error', {error: err});
-    } else {
-       res.redirect('/fixtures');
-    }
-  });
+	fixture.save((err) => {
+		if (err) {
+		res.render('error', {error: err});
+		} else {
+		res.redirect('/fixtures');
+		}
+	});
 
 });
 
 router.delete('/', isLoggedIn, (req, res) => {
-    const fixId = req.body.id;
-    console.log(fixId);
+	const fixId = req.body.id;
 
-    Fixture.findByIdAndRemove(fixId, (err) => {
-        if (err) return console.log(err);
+	Fixture.findByIdAndRemove(fixId, (err) => {
+		if (err)
+            return res.render('error', {error : err});
+	});
+
+	res.send('Fixture: ' + fixId + ' removed...');
+});
+
+router.get('/:user', isLoggedIn, isUserPage, (req, res, next)=>{
+  
+    Fixture.find({}, (err, fixtures) => {
+        if (err)
+            return res.render('error', {error : err});
+
+        fixtures = fixtures.sort((a, b)=>{
+          return a.fixDate - b.fixDate;
+		})
+
+    res.render('userfix', {title: 'User Fixtures', fixtures, user : req.user});
     });
-    
-    res.send('Fixture: ' + fixId + ' removed...');
+  
 });
 
-router.get('/:user', isLoggedIn, function(req, res, next) {
-  const userId = req.params.user;
-  Fixture.find({}, (err, fixtures) => {
-      if (err)
-          return res.render('error', {error : err});
+router.post('/:user', (req, res, next)=>{
+	const fixtureId = req.body.fixtureId;
+	const userId = req.params.user;
+	let responseMessage = "";
 
-      fixtures = fixtures.sort((a, b)=>{
-        return a.fixDate - b.fixDate;
-      })
+	Fixture.findById(fixtureId, (err, fixture)=> {
+		if (err)
+			return res.render('error', {error : err});
 
-    res.render('userfix', {title: 'User Fixtures', userId, fixtures, user : req.user})
-  });
+		if (fixture.players.length > 0){
+
+			let count = 0;
+			
+
+			for (var i = 0; i < fixture.players.length; i++){
+				if (fixture.players[i].userId === userId){
+					if (fixture.players[i].available == "Not Available"){
+						fixture.players[i].available = "Not Set";
+						responseMessage = "Not Set";						
+					} else if (fixture.players[i].available == "Not Set"){
+						fixture.players[i].available = "Available"
+						responseMessage = "Available";
+					} else if (fixture.players[i].available == "Available"){
+						fixture.players[i].available = "Not Available";
+						responseMessage = "Not Available";
+					}
+				} else count++;
+			}
+
+			if (count === fixture.players.length){
+				fixture.players.push({ 
+					userId : userId,
+					available : "Available",
+				});
+			}
+
+		} else {
+			fixture.players.push({ 
+				userId : userId,
+				available : "Available",
+			});
+			
+		}
+
+		fixture.save((err, updatedFix)=>{
+			if (err)
+				return res.render('error', {error : err});
+			res.send(responseMessage)
+		})
+	})
+
 });
 
-router.put('/:user', isLoggedIn, function(req, res, next){
-  // find fixture by fix ID
-  // add user id avialble to fixture document
-  // send response message "availability updated"? required? 
-  res.redirect('/')
-});
+function isUserPage(req, res, next) {
+  	const userId = req.params.user;
+	const sessionId = req.user._id;
+
+	if (userId != sessionId){
+		res.redirect('/');
+	} else {
+		return next();
+	}
+};
+
 
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()){
-    return next();
-  } else {
-    req.flash("loginMessage", "You need to be signed in to access that page")
-    res.redirect('/signin');
-  }
+	if (req.isAuthenticated()){
+		return next();
+	} else {
+		req.flash("loginMessage", "You need to be signed in to access that page")
+		res.redirect('/signin');
+	}
 }
 
 module.exports = router;

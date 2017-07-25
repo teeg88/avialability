@@ -4,18 +4,25 @@ block content
 
   p.text-danger.bg-danger= flashMessage
 
-  div#sign_up.container-fluid
+  div#sign_up.container-fluid.col-sm-4.col-sm-offset-4.border
     h3 Sign Up
+    br
     form(action="/signup" method="post")
       div.form-group
         label(for="email") Email:
-          input.form-control(required type="email" name="email")
+        input.form-control(required type="email" name="email")
       div.form-group  
         label(for="password") Password:
-          input.form-control(required type="password" name="password")
+        input.form-control(required type="password" name="password")
       div.form-group  
         label(for="password2") Re-Enter Password:
-          input.form-control(required type="password" name="password2")
+        input.form-control(required type="password" name="password2")
+      div.form-group
+        label(for="firstName") First Name:
+        input.form-control(required type="text" name="firstName")
+      div.form-group
+        label(for="lastName") Last Name:
+        input.form-control(required type="text" name="lastName")
       div.form-group
         input.btn.btn-primary(type="submit")
     a#showSignIn(href="/signin") Already registered? Sign In...

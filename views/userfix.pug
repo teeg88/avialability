@@ -4,11 +4,18 @@ block content
     div#fixtures.container-fluid.col-sm-12
         each fix in fixtures
             div.userList.blue.col-sm-offset-2.col-sm-8
+                div.clear
                 ul
                     li= new Date(fix.fixDate).toDateString()
                     li= fix.team          
                     li= 'vs ' + fix.against
                     li= '@ ' + fix.location
-                    li(style="visibility: hidden;")= fix._id
+                    li.fixId(style="visibility: hidden;")= fix._id
+                    br
+
+                    each player, index in fix.players 
+                        if (fix.players[index].userId == user._id)
+                            li.availability= player.available 
+
 block append scripts
   script(src='/javascripts/userfix.js')

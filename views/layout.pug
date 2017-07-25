@@ -7,8 +7,8 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     nav.navbar.navbar-inverse.bg-inverse
-      a.navbar-brand= title
       if user
+        a.navbar-brand Welcome #{user.details.firstName} #{user.details.lastName} 
         p.navbar-text Logged in as: #{user.local.email}
           a(href='/logout') Logout
     div.container-fluid
