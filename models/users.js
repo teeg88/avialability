@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     details : {
         firstName: {type: String, required: true},
         lastName: {type: String, required: true},
+        admin: {type : Boolean, default: false},
     },
 });
 

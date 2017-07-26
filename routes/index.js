@@ -1,6 +1,7 @@
 const express       = require('express');
 const router        = express.Router();
 const bodyParser    = require('body-parser');
+const Fixture       = require('../models/fixtures.js');
 const User          = require('../models/users.js');
 const passport      = require('passport');
 
@@ -11,17 +12,35 @@ router.get('/', isLoggedIn, (req, res, next)=>{
 	});
 });
 
+router.get('/users', isLoggedIn, (req, res, next)=> {
+
+	User.find({}, (err, users)=>{
+		if (err)
+			return res.render('error', {error : err});
+		res.render('users', {
+			title : "Users",
+			users,
+			user : req.user,
+		})
+	});
+
+})
+
+
 router.get('/signup', (req, res, next) => {
 	if (req.user){
 		res.redirect('/')
 	} else { 
-		res.render('signup', { title: 'Sign Up', flashMessage : req.flash('signupMessage') })
+		res.render('signup', { 
+			title: 'Sign Up', 
+			flashMessage : req.flash('signupMessage') 
+		})
 	}   
 });
 
 router.post('/signup',
 	passport.authenticate('local-signup', {
-		successRedirect : '/fixtures', // redirect to the secure profile section
+		successRedirect : '/', // redirect to the secure profile section
 		failureRedirect : '/signup', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 }));
@@ -37,7 +56,7 @@ router.post('/signin',
 		failureFlash : true // allow flash messages
 }));
 
-router.get('/logout', function(req, res) {
+router.get('/logout', (req, res, next)=>{
 	req.logout();
 	res.redirect('/signin');
 });

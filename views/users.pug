@@ -6,6 +6,11 @@ block content
     
     div.container.col-xs-12
         h4 Active Users:
-        ul
-            each user in users
-                li= user.email + " | " + user.password
+        each user in users
+            ul
+                li= user.local.email
+                li= user.details.firstName + ' ' + user.details.lastName
+                if user.details.admin
+                    li.red Admin
+                li
+                    a(href="/delete/" + user._id) Delete

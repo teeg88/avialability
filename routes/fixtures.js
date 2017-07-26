@@ -4,19 +4,23 @@ const bodyParser 	= require('body-parser');
 const Fixture 		= require('../models/fixtures.js');
 const User 			= require('../models/users.js');
 
-
+ 
 router.get('/', isLoggedIn, (req, res, next)=>{
   
-  Fixture.find({}, (err, fixtures) => {
+  	Fixture.find({}, (err, fixtures) => {
         if (err)
             return res.render('error', {error : err});
 
-        fixtures = fixtures.sort((a, b)=>{
-          return a.fixDate - b.fixDate;
-        })
+		return fixtures;
+	
+  	}).then((fixtures)=>{
 
-        res.render('fixtures', {title : 'Fixtures', fixtures, user: req.user});
-  });
+		fixtures = fixtures.sort((a, b)=>{
+          return a.fixDate - b.fixDate;
+		});
+
+		res.render('fixtures', {title : 'Fixtures', fixtures, user: req.user});
+	});
 });
 
 router.post('/', isLoggedIn, (req, res, next) => {
@@ -68,7 +72,7 @@ router.post('/:user', (req, res, next)=>{
 	const fixtureId = req.body.fixtureId;
 	const userId = req.params.user;
 	let responseMessage = "";
-
+	
 	Fixture.findById(fixtureId, (err, fixture)=> {
 		if (err)
 			return res.render('error', {error : err});
@@ -76,7 +80,6 @@ router.post('/:user', (req, res, next)=>{
 		if (fixture.players.length > 0){
 
 			let count = 0;
-			
 
 			for (var i = 0; i < fixture.players.length; i++){
 				if (fixture.players[i].userId === userId){
@@ -97,15 +100,20 @@ router.post('/:user', (req, res, next)=>{
 				fixture.players.push({ 
 					userId : userId,
 					available : "Available",
+					firstName : req.user.details.firstName,
+					lastName: req.user.details.lastName,
 				});
+				responseMessage = "Available";
 			}
 
 		} else {
 			fixture.players.push({ 
 				userId : userId,
 				available : "Available",
+				firstName : req.user.details.firstName,
+				lastName: req.user.details.lastName,
 			});
-			
+			responseMessage = "Available";
 		}
 
 		fixture.save((err, updatedFix)=>{
@@ -116,6 +124,22 @@ router.post('/:user', (req, res, next)=>{
 	})
 
 });
+
+router.get('/reset/reset/:id', isLoggedIn, (req, res, next)=> {
+		
+	Fixture.update(
+		{ "_id": req.params.id }, 
+		{
+			"$pull": {
+				"players": {}
+			}
+		}, 
+		(err, numAffected) => {console.log("data:", numAffected)}
+	); 
+
+	res.send('reset')
+});
+
 
 function isUserPage(req, res, next) {
   	const userId = req.params.user;
@@ -137,5 +161,8 @@ function isLoggedIn(req, res, next) {
 		res.redirect('/signin');
 	}
 }
+
+
+
 
 module.exports = router;

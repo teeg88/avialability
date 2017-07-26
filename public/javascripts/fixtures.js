@@ -20,12 +20,3 @@ function deleteFixture(id, parent){
     xhr.send(data);
 }
 
-// need to fix bug here - doesn't work with ios safari
-fix.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON'){
-        if(e.target.id === 'deleteButton'){
-            const deleteId = e.target.parentNode.nextSibling.innerHTML;
-            deleteFixture(deleteId, e.target.parentNode.parentNode);
-        };
-    };
-});

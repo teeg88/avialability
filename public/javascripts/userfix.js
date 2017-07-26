@@ -48,6 +48,6 @@ $(document).ready(function(){
         } else if (availability === "Not Set"){
             $(this).removeClass();
             $(this).addClass('blue userList col-sm-offset-2 col-sm-8');
-        }
+        } 
     });
 });
