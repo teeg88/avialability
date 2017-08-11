@@ -56,6 +56,11 @@ router.post('/signin',
 		failureFlash : true // allow flash messages
 }));
 
+router.get('/setup', (req, res, next) => {
+	res.send('Under construction...')
+	// settings for the app to go here - club name etc. 
+})
+
 router.get('/logout', (req, res, next)=>{
 	req.logout();
 	res.redirect('/signin');

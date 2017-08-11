@@ -7,10 +7,12 @@ block content
     div.container.col-xs-12
         h4 Active Users:
         each user in users
-            ul
+            ul.activeUser
                 li= user.local.email
                 li= user.details.firstName + ' ' + user.details.lastName
                 if user.details.admin
-                    li.red Admin
-                li
-                    a(href="/delete/" + user._id) Delete
+                    li.admin Admin
+                a(href="") 
+                    button.btb.btn-danger remove
+                a(href="") 
+                    button.btb.btn-warning edit

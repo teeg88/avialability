@@ -3,7 +3,7 @@ $('.userList').on("click", function(e){
 
     const fixtureId = $(e.target).next().children(".fixId").html();
 
-    var settings = {
+    const settings = {
         "async": true,
         "crossDomain": true,
         "url": window.location.href,
@@ -17,7 +17,7 @@ $('.userList').on("click", function(e){
         }
     }
     
-    var self = this;
+    const self = this;
 
     $.ajax(settings).done(function (response) {
         if (response == "Not Available"){

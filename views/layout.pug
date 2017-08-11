@@ -1,19 +1,19 @@
 doctype html
 html
-  head
-    title Availability App
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    nav.navbar.navbar-inverse.bg-inverse
-      if user
-        a(href="/").navbar-brand Welcome #{user.details.firstName} #{user.details.lastName} 
-        p.navbar-text Logged in as: #{user.local.email}
-          br
-          a(href='/logout') Logout
-    div.container-fluid
-      block content
-    block scripts
-      script(src="https://code.jquery.com/jquery-3.2.1.min.js")
-      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+	head
+		title Availability App
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		nav.navbar.navbar-inverse.bg-inverse
+			if user
+				a(href="/").navbar-brand Welcome #{user.details.firstName} #{user.details.lastName} 
+				p.navbar-text Logged in as: #{user.local.email}
+					br
+					a(href='/logout') Logout
+		div.container-fluid
+			block content
+		block scripts
+			script(src="https://code.jquery.com/jquery-3.2.1.min.js")
+			script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')

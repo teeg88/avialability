@@ -13,13 +13,16 @@ router.get('/', isLoggedIn, (req, res, next)=>{
 
 		return fixtures;
 	
-  	}).then((fixtures)=>{
+  	}).then((fixtures) => {
 
 		fixtures = fixtures.sort((a, b)=>{
           return a.fixDate - b.fixDate;
 		});
 
-		res.render('fixtures', {title : 'Fixtures', fixtures, user: req.user});
+		res.render('fixtures', {
+			title : 'Fixtures', 
+			fixtures, 
+			user: req.user});
 	});
 });
 
@@ -63,7 +66,10 @@ router.get('/:user', isLoggedIn, isUserPage, (req, res, next)=>{
           return a.fixDate - b.fixDate;
 		})
 
-    res.render('userfix', {title: 'User Fixtures', fixtures, user : req.user});
+    res.render('userfix', {
+		title: 'User Fixtures', 
+		fixtures, 
+		user : req.user});
     });
   
 });

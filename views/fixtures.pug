@@ -1,49 +1,53 @@
 extends layout
 
 block content
-  div#fixtures.container-fluid.col-sm-12
-      each fix in fixtures
-        ul.userList.blue.col-sm-offset-2.col-sm-8
-          li= new Date(fix.fixDate).toDateString()
-          li
-            h4= fix.team          
-          li
-            h4= 'vs ' + fix.against
-          li
-            h4= '@ ' + fix.location
-          h5 Players Available: 
-          ul  
-          each player in fix.players
-            if (player.available == "Available")
-              li= player.firstName + " " + player.lastName
-              br
-          if user.details.admin
-            button#deleteButton.btn-danger delete
-          li(style="visibility: hidden;")= fix._id
-  
-  if user.details.admin
-    div#addFix.container-fluid.col-sm-offset-2.col-sm-8
-      p#response
-      form(action="" method="post")
-        div.form-group
-          label(for="fixDate") Date:
-          input#fixDate.form-control(required name="fixDate" type="date")
-        div.form-group
-          label(for="team") Team: 
-          select#team.form-control(required name="team" type="text")
-            option 1st XI
-            option 2nd XI
-        div.form-group
-          label(for="against") Opponent: 
-          input#against.form-control(required name="against" type="text")
-        div.form-group
-          label(for="location") Location:
-          select#location.form-control(required name="location")
-            option Home
-            option Away
-        div.form-group
-          input.btn.btn-primary(type="submit")
+	div#fixtures.container-fluid.col-sm-12
+		each fix in fixtures
+			ul.userList.blue.col-sm-offset-2.col-sm-8
+				li= new Date(fix.fixDate).toDateString()
+				li
+					h4= fix.team          
+				li
+					h4= 'vs ' + fix.against
+				li
+					h4= '@ ' + fix.location
+				h5 Players Available: 
+				ul  
+				each player in fix.players
+					if (player.available == "Available")
+						li= player.firstName + " " + player.lastName
+						br
+				if user.details.admin
+					button#deleteButton.btn-danger delete
+					button#editButton.btn-warning edit
+				li(style="visibility: hidden;")= fix._id
+
+		a(href="/")
+			button.btn.btn-primary.btn-lg.col-xs-12.col-sm-offset-3.col-sm-6  Finish        
+
+	if user.details.admin
+		div#addFix.container-fluid.col-sm-offset-2.col-sm-8
+			p#response
+				form(action="" method="post")
+					div.form-group
+						label(for="fixDate") Date:
+						input#fixDate.form-control(required name="fixDate" type="date")
+					div.form-group
+						label(for="team") Team: 
+						select#team.form-control(required name="team" type="text")
+							option 1st XI
+							option 2nd XI
+					div.form-group
+						label(for="against") Opponent: 
+						input#against.form-control(required name="against" type="text")
+					div.form-group
+						label(for="location") Location:
+						select#location.form-control(required name="location")
+							option Home
+							option Away
+					div.form-group
+						input.btn.btn-primary(type="submit")
 
 block append scripts
-  script(src='/javascripts/fixtures.js')
-      
+	script(src='/javascripts/fixtures.js')
+
