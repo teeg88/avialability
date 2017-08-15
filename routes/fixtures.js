@@ -11,10 +11,6 @@ router.get('/', isLoggedIn, (req, res, next)=>{
         if (err)
             return res.render('error', {error : err});
 
-		return fixtures;
-	
-  	}).then((fixtures) => {
-
 		fixtures = fixtures.sort((a, b)=>{
           return a.fixDate - b.fixDate;
 		});
@@ -23,7 +19,9 @@ router.get('/', isLoggedIn, (req, res, next)=>{
 			title : 'Fixtures', 
 			fixtures, 
 			user: req.user});
-	});
+
+	})
+	
 });
 
 router.post('/', isLoggedIn, (req, res, next) => {
@@ -63,7 +61,7 @@ router.get('/:user', isLoggedIn, isUserPage, (req, res, next)=>{
             return res.render('error', {error : err});
 
         fixtures = fixtures.sort((a, b)=>{
-          return a.fixDate - b.fixDate;
+          return a.against - b.against;
 		})
 
     res.render('userfix', {
@@ -74,9 +72,9 @@ router.get('/:user', isLoggedIn, isUserPage, (req, res, next)=>{
   
 });
 
-router.post('/:user', (req, res, next)=>{
-	const fixtureId = req.body.fixtureId;
-	const userId = req.params.user;
+router.post('/:user', isLoggedIn, (req, res, next)=>{
+	let fixtureId = req.body.fixtureId;
+	let userId = req.params.user;
 	let responseMessage = "";
 	
 	Fixture.findById(fixtureId, (err, fixture)=> {
@@ -131,19 +129,27 @@ router.post('/:user', (req, res, next)=>{
 
 });
 
-router.get('/reset/reset/:id', isLoggedIn, (req, res, next)=> {
-		
-	Fixture.update(
-		{ "_id": req.params.id }, 
-		{
-			"$pull": {
-				"players": {}
-			}
-		}, 
-		(err, numAffected) => {console.log("data:", numAffected)}
-	); 
 
-	res.send('reset')
+router.get('/reset/all', isLoggedIn, (req, res, next)=> {
+	
+	Fixture.find({}, (err, fixtures)=>{
+		
+		for(let i = 0; i < fixtures.length; i++){
+			
+			Fixture.update(
+				{ "_id": fixtures[i]._id }, 
+				{
+					"$pull": {
+						"players": {}
+					}
+				}, 
+				(err, numAffected) => {console.log("data:", numAffected)}
+			); 
+
+		}
+
+		res.send('reset')
+	});
 });
 
 

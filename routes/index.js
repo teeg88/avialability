@@ -12,20 +12,6 @@ router.get('/', isLoggedIn, (req, res, next)=>{
 	});
 });
 
-router.get('/users', isLoggedIn, (req, res, next)=> {
-
-	User.find({}, (err, users)=>{
-		if (err)
-			return res.render('error', {error : err});
-		res.render('users', {
-			title : "Users",
-			users,
-			user : req.user,
-		})
-	});
-
-})
-
 
 router.get('/signup', (req, res, next) => {
 	if (req.user){

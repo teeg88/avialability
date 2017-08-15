@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    div.col-sm-offset-4.col-sm-4
+        h1 Edit User
+        form(action="" method="post")
+            .form-group
+                label(for="firstName") First Name:
+                input(type="text" id="firstName" name="firstName" value=`${user.details.firstName}`).form-control
+            .form-group
+                label(for="lastName") Last Name:
+                input(type="text" id="lastName" name="lastName" value=`${user.details.lastName}`).form-control
+            .form-group
+                label(for="email") Email:
+                input(type="email" id="email" name="email" value=`${user.local.email}`).form-control
+            .form-group
+                label(for="firstName") Admin:
+                select(type="text" id="admin" name="admin").form-control
+                    if user.details.admin
+                        option(selected) true
+                        option false
+                    else 
+                        option true
+                        option(selected) false
+            .form-group
+                input.btn.btn-primary.col-xs-12(type="submit" value="Save")

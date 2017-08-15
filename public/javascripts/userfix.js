@@ -22,15 +22,15 @@ $('.userList').on("click", function(e){
     $.ajax(settings).done(function (response) {
         if (response == "Not Available"){
             $(self).removeClass();
-            $(self).addClass('red userList col-sm-offset-2 col-sm-8');
+            $(self).addClass('red userList col-xs-6');
             $(self).children().children(".availability").html(response);
         } else if (response == "Not Set"){
             $(self).removeClass();
-            $(self).addClass('blue userList col-sm-offset-2 col-sm-8');
+            $(self).addClass('blue userList col-xs-6');
             $(self).children().children(".availability").html(response);
         } else if (response == "Available"){
             $(self).removeClass();
-            $(self).addClass('green userList col-sm-offset-2 col-sm-8');
+            $(self).addClass('green userList col-xs-6');
             $(self).children().children(".availability").html(response);
         }
     });
@@ -41,13 +41,13 @@ $(document).ready(function(){
         const availability = $(this).children().children(".availability").html();
         if (availability === "Not Available"){
             $(this).removeClass();
-            $(this).addClass('red userList col-sm-offset-2 col-sm-8');
+            $(this).addClass('red userList col-xs-6');
         } else if (availability === "Available"){
             $(this).removeClass();
-            $(this).addClass('green userList col-sm-offset-2 col-sm-8');
+            $(this).addClass('green userList col-xs-6');
         } else if (availability === "Not Set"){
             $(this).removeClass();
-            $(this).addClass('blue userList col-sm-offset-2 col-sm-8');
+            $(this).addClass('blue userList col-xs-6');
         } 
     });
 });

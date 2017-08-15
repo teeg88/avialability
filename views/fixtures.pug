@@ -1,9 +1,9 @@
 extends layout
 
 block content
-	div#fixtures.container-fluid.col-sm-12
+	div#fixtures.container-fluid.col-xs-12
 		each fix in fixtures
-			ul.userList.blue.col-sm-offset-2.col-sm-8
+			ul.userList.blue.col-xs-12.col-sm-offset-2.col-sm-8
 				li= new Date(fix.fixDate).toDateString()
 				li
 					h4= fix.team          
@@ -17,9 +17,11 @@ block content
 					if (player.available == "Available")
 						li= player.firstName + " " + player.lastName
 						br
+				
 				if user.details.admin
-					button#deleteButton.btn-danger delete
-					button#editButton.btn-warning edit
+					div.buttons
+						a(href="")#deleteButton.btn.btn-xs.btn-danger delete
+						a(href="")#editButton.btn.btn-xs.btn-warning edit
 				li(style="visibility: hidden;")= fix._id
 
 		a(href="/")

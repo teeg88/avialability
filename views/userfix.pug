@@ -1,21 +1,22 @@
 extends layout
 
 block content
-    div#fixtures.container-fluid.col-sm-12
+    div#fixtures.container-fluid.col-xs-12.col-sm-offset-2.col-sm-8
         p Click or tap the fixture to change your availability
         each fix in fixtures
-            div.userList.blue.col-sm-offset-2.col-sm-8
+            div.userList.blue.col-xs-6
                 div.clear
                 ul
                     li= new Date(fix.fixDate).toDateString()
                     li= fix.team          
                     li= 'vs ' + fix.against
+                    br
                     li= '@ ' + fix.location
                     li.fixId(style="visibility: hidden;")= fix._id
                     br
                     each player, index in fix.players 
                         if (fix.players[index].userId == user._id)
-                            li.availability= player.available
+                            li.availability= player.available 
         a(href="/")
             button.btn.btn-primary.btn-lg.col-xs-12.col-sm-offset-3.col-sm-6  Finish
                     

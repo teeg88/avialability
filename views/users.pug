@@ -4,15 +4,21 @@ block content
 
     p= flashMessage
     
-    div.container.col-xs-12
+    div.container.col-xs-12.col-sm-8.col-sm-offset-2
         h4 Active Users:
         each user in users
-            ul.activeUser
-                li= user.local.email
+            ul.activeUser.col-lg-4
                 li= user.details.firstName + ' ' + user.details.lastName
+                li= user.local.email
                 if user.details.admin
                     li.admin Admin
-                a(href="") 
-                    button.btb.btn-danger remove
-                a(href="") 
-                    button.btb.btn-warning edit
+                else
+                    li User
+                li.user_ID= user._id
+                div.buttons
+                    - var url = "users/" + user._id;
+                    if !user.details.admin
+                        a(href="").delete.btn.btn-xs.btn-danger remove
+                    a(href=url).edit.btn.btn-xs.btn-warning edit
+block append scripts
+  script(src='/javascripts/user.js') 

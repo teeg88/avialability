@@ -39,22 +39,32 @@ module.exports = function(passport) {
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already in use.'));
             } else {
+                
+                User.count({}, (err, c)=>{
+                    if (err) throw err;
+                    // if there is no user with that email, create the user
+                    let newUser = new User;
 
-				// if there is no user with that email, create the user
-                var newUser            = new User();
-
-                // set the user's local credentials
-                newUser.local.email         = email;
-                newUser.local.password      = newUser.generateHash(password); // use the generateHash function in our user model
-                newUser.details.firstName   = req.body.firstName;
-                newUser.details.lastName    = req.body.lastName;
-
-				// save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
+                    // set the user's local credentials
+                    newUser.local.email         = email;
+                    newUser.local.password      = newUser.generateHash(password); // use the generateHash function in our user model
+                    newUser.details.firstName   = req.body.firstName;
+                    newUser.details.lastName    = req.body.lastName;
+                    
+                    // sets the first user to sign up as admin.  Admin is set as false by default
+                    if (c == 0){
+                        newUser.details.admin = true;
+                    }
+                    
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
                 });
+                });
+
+				
             }
 
         });
