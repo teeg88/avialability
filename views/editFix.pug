@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    div.col-sm-offset-2.col-sm-8
+        h1 Edit Fixture
+        form(action="" method="post").col-sm-6
+            .form-group
+                label(for="fixDate") Fixture Date:
+                input(type="date" id="fixDate" name="fixDate").form-control
+            .form-group
+                label(for="against") Against:
+                input(type="text" id="against" name="against" value=`${fixture.against}`).form-control
+            .form-group
+                label(for="team") Team:
+                select(type="text" id="team" name="team").form-control
+                    if (fixture.team === "1st XI")
+                        option(selected) 1st XI
+                        option 2nd XI
+                    else if (fixture.team === "2nd XI")
+                        option 1st XI
+                        option(selected) 2nd XI
+            .form-group
+                label(for="location") Location:
+                select(type="text" id="location" name="location").form-control
+                    if (fixture.location === "Home")
+                        option(selected) Home
+                        option Away
+                    else if (fixture.location === "Away")
+                        option Home
+                        option(selected) Away
+            .form-group
+                input.btn.btn-primary.col-xs-12(type="submit" value="Save")
+                -var url = "../../fixtures/delete/" + fixture._id;
+                a(href=url).btn.btn-danger.col-xs-12 Delete Fixture
+
+        div#editPlayers.col-sm-6
+            h5 Players:
+            each player in fixture.players
+                div.player
+                    p= player.firstName + " " + player.lastName
+                        a.btn.btn-warning.btn-xs.pull-right Remove
+                        

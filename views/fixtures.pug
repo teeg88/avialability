@@ -20,9 +20,8 @@ block content
 				
 				if user.details.admin
 					div.buttons
-						a(href="")#deleteButton.btn.btn-xs.btn-danger delete
-						a(href="")#editButton.btn.btn-xs.btn-warning edit
-				li(style="visibility: hidden;")= fix._id
+						-var url = "fixtures/fixture/" + fix._id;
+						a(href=url).edit.btn.btn-warning edit
 
 		a(href="/")
 			button.btn.btn-primary.btn-lg.col-xs-12.col-sm-offset-3.col-sm-6  Finish        

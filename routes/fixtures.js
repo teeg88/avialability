@@ -43,15 +43,15 @@ router.post('/', isLoggedIn, (req, res, next) => {
 
 });
 
-router.delete('/', isLoggedIn, (req, res) => {
-	const fixId = req.body.id;
+router.get('/delete/:fix_id', isLoggedIn, (req, res) => {
+	const fixId = req.params.fix_id;
 
 	Fixture.findByIdAndRemove(fixId, (err) => {
 		if (err)
             return res.render('error', {error : err});
 	});
 
-	res.send('Fixture: ' + fixId + ' removed...');
+	res.send('Fixture: ' + fixId + ' removed... <a href="/">continue</a>');
 });
 
 router.get('/:user', isLoggedIn, isUserPage, (req, res, next)=>{
@@ -126,6 +126,22 @@ router.post('/:user', isLoggedIn, (req, res, next)=>{
 			res.send(responseMessage)
 		})
 	})
+
+});
+
+router.get('/fixture/:fix_id', isLoggedIn,  (req, res, next)=>{
+	
+	let fix_id = req.params.fix_id;
+	
+	Fixture.findOne({_id : fix_id}, (err, fixture) => {
+		if (err)
+			return res.render('error', {error : err});
+		
+		res.render('editFix', {
+			fixture,
+			user : req.user
+		})
+	});
 
 });
 

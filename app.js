@@ -17,7 +17,7 @@ const users 			= require('./routes/user');
 const app = express();
 
 // mongoose db connection
-mongoose.connect('mongodb://localhost/fixtures');
+mongoose.connect('mongodb://app:u56YVJr5ePxXhhGE@ds023118.mlab.com:23118/tgooding');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
